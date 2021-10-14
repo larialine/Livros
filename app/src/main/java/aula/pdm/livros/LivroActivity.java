@@ -48,6 +48,7 @@ public class LivroActivity extends AppCompatActivity {
         posicao = getIntent().getIntExtra(MainActivity.EXTRA_POSICAO, -1);
         livro = getIntent().getParcelableExtra(MainActivity.EXTRA_LIVRO);
         if(livro != null){
+            activityLivroBinding.tituloEt.setEnabled(false);
             activityLivroBinding.tituloEt.setText(livro.getTitulo());
             activityLivroBinding.isbnEt.setText(livro.getIsbn());
             activityLivroBinding.primeiroAutorEt.setText(livro.getPrimeiroAutor());
