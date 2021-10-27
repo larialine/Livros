@@ -77,23 +77,25 @@ class LivroSqlite(contexto: Context): LivroDao {
     }
 
     override fun recuperarLivros(): MutableList<Livro> {
-        val livroCursor = livrosBd.query(TABELA_LIVRO, null, null, null, null, null, null, null)
+        val livrosList = mutableListOf<Livro>()
 
-        val itemLivros = mutableListOf<Livro>()
-        with(livroCursor){
-            while(livroCursor.moveToNext()){
-                val item = Livro (
+        val livrosCursor = livrosBd.rawQuery("SELECT * FROM ${TABELA_LIVRO};", null)
+
+        while(livrosCursor.moveToNext()){
+            with(livrosCursor){
+                 livrosList.add(
+                     Livro(
                         getString(getColumnIndexOrThrow(COLUNA_TITULO)),
                         getString(getColumnIndexOrThrow(COLUNA_ISBN)),
                         getString(getColumnIndexOrThrow(COLUNA_PRIMEIRO_AUTOR)),
                         getString(getColumnIndexOrThrow(COLUNA_EDITORA)),
                         getInt(getColumnIndexOrThrow(COLUNA_EDICAO)),
                         getInt(getColumnIndexOrThrow(COLUNA_PAGINAS))
-                )
-                itemLivros.add(item)
+                     )
+                 )
             }
         }
-        return itemLivros
+        return livrosList
     }
 
     override fun atualizarLivro(livro: Livro): Int {
